@@ -1,0 +1,281 @@
+Naming Convention :  
+upstream repo - Original Github repo.
+forked repo - Repo under your username forked from the original repo.
+local repo - The repo on your local machine.
+
+ 
+1.git config -l :  Shows all the config information .
+
+##Cloning a repo:
+1)git clone {url of the repo}
+2)When you clone a repo fom the github the origin is automatically specified for you. You don't need to set it up manually. You might need to specify the upstream to point to the repo you forked.
+
+##Creating a repo:
+1)git init
+2)If you want to push it to github 
+	a)create a repository with proper name on the github.
+	b)set your origin url to pont to this repo.
+###setting up origin and upstream url for you local repo####
+	1. git remote add upstream {url } - [Points to the original github repo] Remember there are two urls , one for https and one for ssh .} In inmobi You should use ssh url which starts with git@. In your github it will be https.
+
+	2. git remote add origin {url} : To set origin [It should point to your forked repo]
+
+	3.git remote set-url upstream {url} - To update upstream to point to the new url.
+
+	4.git remote set-url origin {url}- To update origin to point to the new url.
+
+###UNDOING CHANGES####
+	​1.git add filename : To add a file to staging area. Staging area is the area where you keep the changes you want to make in the next commit.
+
+	2.git reset filename​​ : If you want to remove a file from staging area.
+
+	3.git reset : Reset the staging area to match the most recent commit, but leave the working directory unchanged.
+
+	4.git reset --hard : Reset the staging area and the working directory to match the most recent commit.
+
+	5.git reset <commit>: Move the current branch tip backward to <commit>, reset the staging area to match, but leave the working directory alone. All changes made since <commit> will reside in the working directory, which lets you re-commit the project history using cleaner, more atomic snapshots.
+
+	6.git reset --hard <commit> : Move the current branch tip backward to <commit> and reset both the staging area and the working directory to match.
+
+	7.git reset HEAD~2 :moves the current branch backward by two commits.The value of ~ is actually how many commits you want to go back to.It will leave your chnges in the working 
+	8.git clean -df :Remove untracked files and untracked directories from the current directory.
+
+	9.git clean -xf: Remove untracked files from the current directory as well as any files that Git usually ignores.
+
+	8.The git reset --hard and git clean -f commands are your best friends after you’ve made some embarrassing developments in your local repository and want to burn the evidence. Running both of them will make your working directory match the most recent commit, giving you a clean slate to work with.
+
+	9.git revert <commit> : Generate a new commit that undoes all of the changes introduced in <commit>, then apply it to the current branch.
+
+
+###GIT CHECKOUT USES###
+
+The git checkout command serves three distinct functions: checking out files, checking out commits, and checking out branches.Checking out a commit makes the entire working directory match that commit. This can be used to view an old state of your project without altering your current state in any way. Checking out a file lets you see an old version of that particular file, leaving the rest of your working directory untouched.
+
+
+
+1.git checkout branchname :- To see how your files are in branchname branch. 
+
+2.git checkout <commit> <filename> : This returns the <file> that resides in the working directory into an exact copy of the one from <commit> and adds it to the staging area.
+
+3.git checkout HEAD <filename> : To  return to the latest copy of the file .
+
+3.git checkout <commit> :Update all files in the working directory to match the specified commit 
+
+
+ 
+
+###creating a pull request ####
+	*please note that its better to  update  your develop branch before creating a pull request by following the given sequence :
+	1.Git pull upstream develop :- this will pull everything from the develop branch of the original repo in your current branch.
+	2. git push origin <branch-name > :- This will automatically create a branch in you remote repo with the same branch_name and push the changes to that branch of the remote repo.
+	3. git checkout develop :- Checkout in your local develop branch.
+	4. git pull upstream develop :- Update your local repo with the latest code in the remote repo.
+	5.git push origin develop :- Push latest code from your local to the remote repo.
+	Now you have both your forked repo and your local repo in sync with the original repo. Checkout to the branch in which you want to make the changes . Make your changes .
+	6.git commit -m "commit message" :- Commit your changes. 
+	7.git push origin <branchname> :- push those changes to your remote repo and create a pull request from github.
+		If any other comments are made by the senior developers.Simply make those changes and commit and push them . That will be automatically added to the pull request .
+ 
+
+###SOME GENERAL USE COMMANDS###
+	1.git branch - To show all the branches.
+	2.git checkout <branchname> - To switch to  branch <branchname>.
+	3.git log - To view all the commits.
+	4.git status - To see the status . [ It shows which branch you are currently woking on,  what are the changes and what are the untracked files]. 
+	5.git diff file1 file2 - To see the changes between the two files.
+	6.git diff <filename> -To see changes in the <filename> with respect to your last commit.
+	7.git branch -r :- to see remote branches.
+	8.git diff --staged - to see changes you have added to the staging area.
+	
+
+###DELETING A LOCAL BRANCH ###
+	1. git branch -d <local_branch_name> - To delete a local branch
+	2. Remote branch you can delete from github UI.
+ 
+### Save your local changes to get a clean repo using git stash ###
+
+13.git stash - record the current state of the working directory and the index, but want to go back to a clean working directory.
+14.git stash list - modifications stashed away by this command can be listed with this command. stash@{0} is the latest ,stash@{1} is before that and so on .
+
+15.git stash show -p stash@{1} - shows the changes you have saved in the stash 1.
+Note stash@{0} is the latest stash , stash{1} is before that one . (-p) option shos the file wise changes as you see in  git diff . Without (-p) option it will simply show an overview as you see on a pull from the upstream .
+
+16.git stash drop - drops the latest stash 
+
+17.git stash drop stash@{1} - drop a particular stash revision.
+
+18.git stash pop - Remove a single stashed state from the stash list and apply it on top of the current working tree state
+
+
+16.git stash apply - restored (potentially on top of a different commit) . But the stash is not removed .
+
+
+
+
+
+17.git checkout filename  - This will remove any changes you have made in that file .If you want to remember these changes do a git stash.
+
+18. Git lg  - On your terminal will show the log in tree structure . 
+
+*Please note if your pull request contains changes which has earlier been merged in the master . You probably forgot to do a  git pull upstream develop and then a git push origin <branch-name> . Do this and you will have only the latest changes in your pull request .
+
+
+
+19.Once you have created a pull request , you further pushes directly updates the that pull request . The above commands 
+$git pull upstream develop
+$git push origin branchname 
+
+20. If you somehow mess up your repo and its really bad and have no idea what you should change to resolve the merge conflicts :
+ #) remove the local repo .
+ #) clone your forked repo from github.
+
+21) Rewriting the most recent commit message 
+#git commit --amend and press Enter.
+In your text editor, edit the commit message and save the commit.
+
+22)git push -u origin master
+
+# pushes the "master" branch to "origin" remote and sets up tracking
+“Tracking” is essentially a link between a local and remote branch. When working on a local branch that tracks some other branch, you can git pull and git push without any extra arguments and git will know what to do.
+
+23) git push -f origin <branch> - to forcibly push changes to a remote repo 
+
+used to squash the last three commits to make one single commit .
+#git rebase -i HEAD~3
+
+
+
+
+
+
+From the course :
+1) diff -u game_old.js game_new.js - to see the difference between two files.
+	- sign on the lines which have been removed from game_old.js 
+	+ sign for the lines which have been added in game_new.js
+
+2) Commits in git are basically different version of the project . 
+ 
+3) git diff first_commit_id second_commit_id - to see the difference between 
+	versions of the project. git diff {the previous commit id} {the new commit id}
+
+4)git log --stat -> to see the commit with history with some logs .
+
+5)git checkout commit_id to checkout to that commit version of the project .
+
+6) Git command line setup :
+
+You have git-competion.bash and git-prompt.sh downloaded in git repo under learn folder. 
+
+git-completion.bash -> https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+
+git-prompt.sh -> https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+Download these 
+
+Follow these commands :
+
+mv ~/Download/git-completion.bash	~/.git-completion.bash
+mv ~/Download/git-prompt.sh ~/.git-prompt.sh
+
+now add these lines in your ~/.bash_profile file :
+# Enable tab completion
+source ~/git-completion.bash
+
+# colors!
+green="\[\033[0;32m\]"
+blue="\[\033[0;34m\]"
+purple="\[\033[0;35m\]"
+reset="\[\033[0m\]"
+
+# Change command prompt
+source ~/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+# '\u' adds the name of the current user to the prompt
+# '\$(__git_ps1)' adds git-related stuff
+# '\W' adds the name of the current directory
+export PS1="$purple\u$green\$(__git_ps1)$blue \W $ $reset"
+
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+
+This will enable autocompletion for git and will colourise the output prompt.
+Restart the terminal or run this command : source ~/.bash_profile
+
+7) add sublime as the default text editor for your commit messages :
+git config --global core.editor "'/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl' -n -w"
+
+git config --global push.default upstream
+git config --global merge.conflictstyle diff3
+
+In order for the changes adding the mute button to be shown as additions, the commit with the mute button needs to be the second argument to git diff. That is because git diff considers the first argument as the "original", and the second argument as the "new" version, so additions are lines present in the second argument but not the first.
+
+8) git init to make any repo a git repo .
+
+
+
+If you have made some , commited it and pushed it and craeted a pull request. Now you can undo the changes that you have pushed in three steps :
+1) Git log - > to see the commit history and figue out the commit you want to revert back to .
+2) git reset --hard <commit id> -> this will remove all the changes after that commit .
+3) git push -f -> push it to your repo forcefully. this will delete all the later commits after the given <commit id>. 
+
+How to create a shortcut to run chrome in insecure mode:
+http://www.1337admin.org/windows/windows-7/allow-chrome-to-load-insecure-content/
+
+##python -m SimpleHTTPServer : to make a local server in that directory
+
+
+Boxes i have access to :
+cas1000.ads.lhr1.inmobi.com
+cas1001.ads.lhr1.inmobi.com
+cas1002.ads.lhr1.inmobi.com
+cas1003.ads.lhr1.inmobi.com
+cas1004.ads.lhr1.inmobi.com
+cas1005.ads.lhr1.inmobi.com
+cas1006.ads.lhr1.inmobi.com
+cas1007.ads.lhr1.inmobi.com
+adhoc1000.brand.uh1.inmobi.com
+adhoc-prod1001.cas.dfw1.inmobi.com - misc box
+
+
+sudo docker ps
+ps aux | grep $(cat /var/run/crond.pid)
+tail -f debug.2017-09-08_11.log
+
+
+greping request from a particular site id :
+1)go to https://idp.corp.inmobi.com/console/containers/browse/#services/cas/
+
+##Grep any production box host and port. In this case the hostname is - http://mtd-0180-rec229-d3ed209.ops.dfw1.inmobi.com
+2) http://mtd-0069-rdy241-d3ed209.ops.dfw1.inmobi.com:10891/trace?site=1708ec63fe394b0a9c88b8c795ca8148 - to enable tracing for this site.
+3) http://mtd-0069-rdy241-d3ed209.ops.dfw1.inmobi.com:10891/trace?stat- to see the stats
+4) http://mtd-0069-rdy241-d3ed209.ops.dfw1.inmobi.com:10891/trace?log=1708ec63fe394b0a9c88b8c795ca8148 - to see the log for the given site .
+
+
+##To run many jobs simultaneously on misc box
+/usr/bin/java  -jar ${CAS_MISC_BASE_DIRECTORY}/bin/cas_job.jar -c ${CAS_MISC_BASE_DIRECTORY}/conf/enrichment.properties -jobs RtbdRejectedCreativeMailer RubiconVastRerunAndMailerJob AdvertiserCategoryUpdateJob DailyAuditReportMailer CreativesAuditedDailyEmailerJob PopulateSitesJob JDCreativeApproval AccountOnBoardingJob PopulatePublisherIXJob AdvertiserImportingJob &
+
+
+
+Resolving conflicts in git :
+<<<<<<< HEAD
+some code  - this is the code in your local repo.
+======= 
+code on the upstream repo
+>>>>>>> d910d0f3f441f980044bb61c55fcff08345a102c - this is the commit which 
+in the upstream repo which is having this code .
+
+1) git pull upstream develop 
+if merge conflict -
+the editor will show you the code in the above highlighted format.
+Keep the changes you want to have in the code .
+2) git add <filename>
+3) git commit -m "commit message"
+4) git push origin develop
+
+
+
+
+
+
+
+
+
